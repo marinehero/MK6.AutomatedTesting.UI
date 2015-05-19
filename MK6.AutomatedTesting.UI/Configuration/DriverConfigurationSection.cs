@@ -14,6 +14,8 @@ namespace MK6.AutomatedTesting.UI.Configuration
 
         private const string RemoteBrowserVersionKey = "remoteBrowserVersion";
 
+        private const string CommandArgumentKey = "commandArgument";
+
         [ConfigurationProperty(BrowserKey, IsRequired = true)]
         public string Browser
         {
@@ -37,6 +39,19 @@ namespace MK6.AutomatedTesting.UI.Configuration
             set
             {
                 this[ServerSourceKey] = value;
+            }
+        }
+
+        [ConfigurationProperty(CommandArgumentKey, IsRequired = false, DefaultValue = "")]
+        public string CommandArgument
+        {
+            get
+            {
+                return this[CommandArgumentKey].ToString();
+            }
+            set
+            {
+                this[CommandArgumentKey] = value;
             }
         }
 

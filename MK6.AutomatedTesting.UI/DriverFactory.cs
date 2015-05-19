@@ -34,9 +34,7 @@ namespace MK6.AutomatedTesting.UI
                         });
                 case "PhantomJS":
                     CopyPhantomJSServerToLocalDirectory(configSection.ServerSource);
-                    var browser = new PhantomJSDriver();
-                    ApplyPhantomJSHack(browser);
-                    return browser;
+                    return BuildPhantomJsBrowser(configSection);
                 case "Remote":
                     return new RemoteWebDriver(
                         new Uri(configSection.RemoteUrl),
@@ -47,6 +45,18 @@ namespace MK6.AutomatedTesting.UI
                             "Unable to create a driver of type {0}",
                             configSection.Browser));
             }
+        }
+
+        private static IWebDriver BuildPhantomJsBrowser(DriverConfigurationSection configSection)
+        {
+            PhantomJSDriverService service = PhantomJSDriverService.CreateDefaultService();
+            if (!string.IsNullOrEmpty(configSection.CommandArgument))
+            {
+                service.AddArgument(configSection.CommandArgument);
+            }
+            var browser = new PhantomJSDriver(service);
+            ApplyPhantomJSHack(browser);
+            return browser;
         }
 
         public static DesiredCapabilities BuildRemoteCapabilities(DriverConfigurationSection configSection)
